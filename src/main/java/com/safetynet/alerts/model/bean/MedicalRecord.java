@@ -1,4 +1,4 @@
-package com.safetynet.alerts.model;
+package com.safetynet.alerts.model.bean;
 
 import lombok.Data;
 import org.springframework.stereotype.Component;
@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Date;
 
 @Data
-@Component
 public class MedicalRecord
 {
 	private String firstName;

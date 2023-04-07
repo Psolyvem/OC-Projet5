@@ -1,10 +1,9 @@
-package com.safetynet.alerts.model;
+package com.safetynet.alerts.model.bean;
 
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
 @Data
-@Component
 public class Person
 {
 	private String firstName;

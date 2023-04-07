@@ -1,5 +1,8 @@
-package com.safetynet.alerts.model;
+package com.safetynet.alerts.model.service;
 
+import com.safetynet.alerts.model.bean.Firestation;
+import com.safetynet.alerts.model.bean.MedicalRecord;
+import com.safetynet.alerts.model.bean.Person;
 import lombok.Data;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -20,8 +23,9 @@ import static java.lang.Integer.parseInt;
 public class JsonReader
 {
 	private static final Logger logger = LogManager.getLogger();
-	public ArrayList<Person> readPersons(String filename)
+	public static ArrayList<Person> readPersons(String filename)
 	{
+		logger.info("Reading persons from data.json");
 		ArrayList<Person> persons = new ArrayList<>();
 		try
 		{
@@ -42,9 +46,6 @@ public class JsonReader
 				person.setPhone((String) jsonPerson.get("phone"));
 				persons.add(person);
 			}
-			logger.info("Parsed persons from json file");
-			logger.error("Error parsing json file");
-			logger.debug("Error parsing json file");
 		} catch (IOException e)
 		{
 			logger.error("Unable to open json file");
@@ -56,8 +57,9 @@ public class JsonReader
 		return persons;
 	}
 
-	public ArrayList<Firestation> readFirestations(String filename)
+	public static ArrayList<Firestation> readFirestations(String filename)
 	{
+		logger.info("Reading fire stations from data.json");
 		ArrayList<Firestation> firestations = new ArrayList<>();
 		try
 		{
@@ -76,17 +78,18 @@ public class JsonReader
 
 		} catch (IOException e)
 		{
-			System.out.println("Unable to open json file");
+			logger.error("Unable to open json file");
 		} catch (ParseException e)
 		{
-			System.out.println("Error parsing json file");
+			logger.error("Error parsing json file");
 		}
 
 		return firestations;
 	}
 
-	public ArrayList<MedicalRecord> readMedicalRecords(String filename)
+	public static ArrayList<MedicalRecord> readMedicalRecords(String filename)
 	{
+		logger.info("Reading medical records from data.json");
 		ArrayList<MedicalRecord> medicalRecords = new ArrayList<>();
 		try
 		{
@@ -123,10 +126,10 @@ public class JsonReader
 
 		} catch (IOException e)
 		{
-			System.out.println("Unable to open json file");
+			logger.error("Unable to open json file");
 		} catch (ParseException e)
 		{
-			System.out.println("Error parsing json file");
+			logger.error("Error parsing json file");
 		}
 
 		return medicalRecords;
