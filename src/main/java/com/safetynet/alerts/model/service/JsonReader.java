@@ -1,8 +1,8 @@
 package com.safetynet.alerts.model.service;
 
+import com.safetynet.alerts.model.bean.DataConfig;
 import com.safetynet.alerts.model.bean.Firestation;
 import com.safetynet.alerts.model.bean.MedicalRecord;
-import com.safetynet.alerts.model.bean.Person;
 import lombok.Data;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -13,6 +13,7 @@ import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Component;
 
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -20,32 +21,22 @@ import static java.lang.Integer.parseInt;
 
 @Data
 @Component
-public class JsonReader
+class JsonReader
 {
 	private static final Logger logger = LogManager.getLogger();
-	public static ArrayList<Person> readPersons(String filename)
+
+	/**
+	 * @return The data in the data.json file as a JSONObject
+	 */
+	protected static JSONObject getData()
 	{
-		logger.info("Reading persons from data.json");
-		ArrayList<Person> persons = new ArrayList<>();
+		logger.info("Reading data from data.json");
+		JSONObject jsonFile = new JSONObject();
 		try
 		{
 			JSONParser jsonParser = new JSONParser();
-			JSONObject jsonFile = (JSONObject) jsonParser.parse(new FileReader(filename));
-			JSONArray jsonPersons = (JSONArray) jsonFile.get("persons");
+			jsonFile = (JSONObject) jsonParser.parse(new FileReader(DataConfig.DATASOURCE));
 
-			for (int i = 0; i < jsonPersons.size(); i++)
-			{
-				JSONObject jsonPerson = (JSONObject) jsonPersons.get(i);
-				Person person = new Person();
-				person.setFirstName((String) jsonPerson.get("firstName"));
-				person.setLastName((String) jsonPerson.get("lastName"));
-				person.setAddress((String) jsonPerson.get("address"));
-				person.setCity((String) jsonPerson.get("city"));
-				person.setZip((String) jsonPerson.get("zip"));
-				person.setEmail((String) jsonPerson.get("email"));
-				person.setPhone((String) jsonPerson.get("phone"));
-				persons.add(person);
-			}
 		} catch (IOException e)
 		{
 			logger.error("Unable to open json file");
@@ -54,8 +45,51 @@ public class JsonReader
 			logger.error("Error parsing json file");
 		}
 
-		return persons;
+		return jsonFile;
 	}
+
+	protected static JSONArray getPersons()
+	{
+		logger.info("Reading persons from data.json");
+		return (JSONArray) getData().get("persons");
+	}
+
+	protected static void writePerson(JSONObject person)
+	{
+		JSONArray persons = getPersons();
+		persons.add(person);
+		writePersons(persons);
+	}
+	private static void writePersons(JSONArray persons)
+	{
+		JSONObject data = getData();
+		data.replace("persons", persons);
+		writeFile(data);
+	}
+
+	private static void writeFile(JSONObject data)
+	{
+		try
+		{
+			FileWriter writer = new FileWriter(DataConfig.DATASOURCE, false);
+			writer.write(data.toJSONString());
+			writer.close();
+		} catch (IOException e)
+		{
+			logger.error("Unable to write in json file");
+		}
+	}
+
+
+
+
+
+
+
+
+
+
+
 
 	public static ArrayList<Firestation> readFirestations(String filename)
 	{
@@ -67,9 +101,9 @@ public class JsonReader
 			JSONObject jsonFile = (JSONObject) jsonParser.parse(new FileReader(filename));
 			JSONArray jsonFirestations = (JSONArray) jsonFile.get("firestations");
 
-			for (int i = 0; i < jsonFirestations.size(); i++)
+			for (Object o : jsonFirestations)
 			{
-				JSONObject jsonFirestation = (JSONObject) jsonFirestations.get(i);
+				JSONObject jsonFirestation = (JSONObject) o;
 				Firestation firestation = new Firestation();
 				firestation.setAddress((String) jsonFirestation.get("address"));
 				firestation.setStation(parseInt((String) jsonFirestation.get("station")));
