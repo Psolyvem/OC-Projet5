@@ -50,7 +50,6 @@ class JsonReader
 
 	protected static JSONArray getPersons()
 	{
-		logger.info("Reading persons from data.json");
 		return (JSONArray) getData().get("persons");
 	}
 

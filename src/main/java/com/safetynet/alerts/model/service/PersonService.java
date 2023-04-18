@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 
 @Component
-public class PersonService
+public class PersonService implements IPersonService
 {
 	private static final Logger logger = LogManager.getLogger();
 
