@@ -1,9 +1,6 @@
 package com.safetynet.alerts.model.service;
 
-import com.safetynet.alerts.model.bean.DataConfig;
-import com.safetynet.alerts.model.bean.Firestation;
-import com.safetynet.alerts.model.bean.MedicalRecord;
-import lombok.Data;
+import com.safetynet.alerts.model.bean.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.simple.JSONArray;
@@ -17,25 +14,128 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import static java.lang.Integer.parseInt;
-
-@Data
+/**
+ * Singleton that read and write Json Data
+ */
 @Component
 class JsonReader
 {
 	private static final Logger logger = LogManager.getLogger();
+	private static JsonReader instance;
+	private JsonData data;
+
+	private JsonReader()
+	{
+		data = new JsonData();
+		readData();
+	}
+
+	public static JsonReader getInstance()
+	{
+		if (instance == null)
+		{
+			instance = new JsonReader();
+		}
+		return instance;
+	}
 
 	/**
-	 * @return The data in the data.json file as a JSONObject
+	 * @return The data in the data.json file as a JsonData object
 	 */
-	protected static JSONObject getData()
+	protected JsonData readData()
 	{
 		logger.info("Reading data from data.json");
-		JSONObject jsonFile = new JSONObject();
+
 		try
 		{
 			JSONParser jsonParser = new JSONParser();
-			jsonFile = (JSONObject) jsonParser.parse(new FileReader(DataConfig.DATASOURCE));
+			JSONObject jsonFile = (JSONObject) jsonParser.parse(new FileReader(DataConfig.DATASOURCE));
+
+			// Matching persons to Java objects
+			JSONArray jsonPersons = (JSONArray) jsonFile.get("persons");
+			ArrayList<Person> persons = new ArrayList<>();
+			if (jsonPersons == null)
+			{
+				logger.info("No data found for : persons");
+			}
+			else
+			{
+				for (Object obj : jsonPersons)
+				{
+					JSONObject jsonPerson = (JSONObject) obj;
+					Person person = new Person();
+					person.setFirstName((String) jsonPerson.get("firstName"));
+					person.setLastName((String) jsonPerson.get("lastName"));
+					person.setAddress((String) jsonPerson.get("address"));
+					person.setCity((String) jsonPerson.get("city"));
+					person.setZip((String) jsonPerson.get("zip"));
+					person.setEmail((String) jsonPerson.get("email"));
+					person.setPhone((String) jsonPerson.get("phone"));
+					persons.add(person);
+				}
+			}
+
+
+			// Matching firestations to Java objects
+			JSONArray jsonFirestations = (JSONArray) jsonFile.get("firestations");
+			ArrayList<Firestation> firestations = new ArrayList<>();
+			if (jsonFirestations == null)
+			{
+				logger.info("No data found for : firestations");
+			}
+			else
+			{
+				for (Object obj : jsonFirestations)
+				{
+					JSONObject jsonFirestation = (JSONObject) obj;
+					Firestation firestation = new Firestation();
+					firestation.setAddress((String) jsonFirestation.get("address"));
+					firestation.setStation((String) jsonFirestation.get("station"));
+					firestations.add(firestation);
+				}
+			}
+
+			// Matching medical records to Java objects
+			JSONArray jsonMedicalRecords = (JSONArray) jsonFile.get("medicalrecords");
+			ArrayList<MedicalRecord> medicalRecords = new ArrayList<>();
+			if (jsonMedicalRecords == null)
+			{
+				logger.info("No data found for : medical records");
+			}
+			else
+			{
+				for (Object record : jsonMedicalRecords)
+				{
+					JSONObject jsonMedicalRecord = (JSONObject) record;
+					MedicalRecord medicalRecord = new MedicalRecord();
+					medicalRecord.setFirstName((String) jsonMedicalRecord.get("firstName"));
+					medicalRecord.setLastName((String) jsonMedicalRecord.get("lastName"));
+					medicalRecord.setBirthDate((String) jsonMedicalRecord.get("birthdate"));
+
+					JSONArray jsonMedications = (JSONArray) jsonMedicalRecord.get("medications");
+					ArrayList<String> medications = new ArrayList<>();
+					for (Object obj : jsonMedications)
+					{
+						medications.add((String) obj);
+					}
+
+					JSONArray jsonAllergies = (JSONArray) jsonMedicalRecord.get("allergies");
+					ArrayList<String> allergies = new ArrayList<>();
+					for (Object obj : jsonAllergies)
+					{
+						allergies.add((String) obj);
+					}
+
+					medicalRecord.setMedications(medications);
+					medicalRecord.setAllergies(allergies);
+					medicalRecords.add(medicalRecord);
+				}
+			}
+
+			// Saving it in JsonData
+			data.setPersons(persons);
+			data.setFirestations(firestations);
+			data.setMedicalRecords(medicalRecords);
 
 		} catch (IOException e)
 		{
@@ -45,33 +145,75 @@ class JsonReader
 			logger.error("Error parsing json file");
 		}
 
-		return jsonFile;
+		return data;
 	}
 
-	protected static JSONArray getPersons()
+	private void writeData()
 	{
-		return (JSONArray) getData().get("persons");
-	}
+		logger.info("Writing data to data.json");
+		JSONObject jsonFile = new JSONObject();
 
-	protected static void writePerson(JSONObject person)
-	{
-		JSONArray persons = getPersons();
-		persons.add(person);
-		writePersons(persons);
-	}
-	private static void writePersons(JSONArray persons)
-	{
-		JSONObject data = getData();
-		data.replace("persons", persons);
-		writeFile(data);
-	}
+		// Mapping Java objects to Json data
+		JSONArray jsonPersons = new JSONArray();
+		ArrayList<Person> persons = data.getPersons();
+		for (Person person : persons)
+		{
+			JSONObject jsonPerson = new JSONObject();
+			jsonPerson.put("firstName", person.getFirstName());
+			jsonPerson.put("lastName", person.getLastName());
+			jsonPerson.put("address", person.getAddress());
+			jsonPerson.put("city", person.getCity());
+			jsonPerson.put("zip", person.getZip());
+			jsonPerson.put("email", person.getEmail());
+			jsonPerson.put("phone", person.getPhone());
+			jsonPersons.add(jsonPerson);
+		}
 
-	private static void writeFile(JSONObject data)
-	{
+		JSONArray jsonFirestations = new JSONArray();
+		ArrayList<Firestation> firestations = data.getFirestations();
+		for (Firestation firestation : firestations)
+		{
+			JSONObject jsonFirestation = new JSONObject();
+			jsonFirestation.put("address", firestation.getAddress());
+			jsonFirestation.put("station", firestation.getStation());
+			jsonFirestations.add(jsonFirestation);
+		}
+
+		JSONArray jsonMedicalRecords = new JSONArray();
+		ArrayList<MedicalRecord> medicalRecords = data.getMedicalRecords();
+		for (MedicalRecord medicalRecord : medicalRecords)
+		{
+			JSONObject jsonMedicalRecord = new JSONObject();
+			jsonMedicalRecord.put("firstName", medicalRecord.getFirstName());
+			jsonMedicalRecord.put("lastName", medicalRecord.getLastName());
+			jsonMedicalRecord.put("birthdate", medicalRecord.getBirthDate());
+			JSONArray jsonMedications = new JSONArray();
+			ArrayList<String> medications = medicalRecord.getMedications();
+			for (String medication : medications)
+			{
+				jsonMedications.add(medication);
+			}
+			jsonMedicalRecord.put("medications", jsonMedications);
+
+			JSONArray jsonAllergies = new JSONArray();
+			ArrayList<String> allergies = medicalRecord.getAllergies();
+			for (String allergie : allergies)
+			{
+				jsonAllergies.add(allergie);
+			}
+			jsonMedicalRecord.put("allergies", jsonAllergies);
+			jsonMedicalRecords.add(jsonMedicalRecord);
+		}
+
+		jsonFile.put("persons", jsonPersons);
+		jsonFile.put("firestations", jsonFirestations);
+		jsonFile.put("medicalrecords", jsonMedicalRecords);
+
+		// Writing the data.json file
 		try
 		{
 			FileWriter writer = new FileWriter(DataConfig.DATASOURCE, false);
-			writer.write(data.toJSONString());
+			writer.write(jsonFile.toJSONString().replace("\\/", "/"));
 			writer.close();
 		} catch (IOException e)
 		{
@@ -79,92 +221,53 @@ class JsonReader
 		}
 	}
 
-
-
-
-
-
-
-
-
-
-
-
-	public static ArrayList<Firestation> readFirestations(String filename)
+	protected ArrayList<Person> getPersons()
 	{
-		logger.info("Reading fire stations from data.json");
-		ArrayList<Firestation> firestations = new ArrayList<>();
-		try
-		{
-			JSONParser jsonParser = new JSONParser();
-			JSONObject jsonFile = (JSONObject) jsonParser.parse(new FileReader(filename));
-			JSONArray jsonFirestations = (JSONArray) jsonFile.get("firestations");
-
-			for (Object o : jsonFirestations)
-			{
-				JSONObject jsonFirestation = (JSONObject) o;
-				Firestation firestation = new Firestation();
-				firestation.setAddress((String) jsonFirestation.get("address"));
-				firestation.setStation(parseInt((String) jsonFirestation.get("station")));
-				firestations.add(firestation);
-			}
-
-		} catch (IOException e)
-		{
-			logger.error("Unable to open json file");
-		} catch (ParseException e)
-		{
-			logger.error("Error parsing json file");
-		}
-
-		return firestations;
+		readData();
+		return data.getPersons();
 	}
 
-	public static ArrayList<MedicalRecord> readMedicalRecords(String filename)
+	/**
+	 * Add a person to the list and writes it
+	 * Does not check if the person already exist, but check if null;
+	 *
+	 * @param person the person to add
+	 */
+	protected void addPerson(Person person)
 	{
-		logger.info("Reading medical records from data.json");
-		ArrayList<MedicalRecord> medicalRecords = new ArrayList<>();
-		try
+		if (person.equals(null))
 		{
-			JSONParser jsonParser = new JSONParser();
-			JSONObject jsonFile = (JSONObject) jsonParser.parse(new FileReader(filename));
-			JSONArray jsonMedicalRecords = (JSONArray) jsonFile.get("medicalrecords");
-
-			for (int i = 0; i < jsonMedicalRecords.size(); i++)
-			{
-				JSONObject jsonMedicalRecord = (JSONObject) jsonMedicalRecords.get(i);
-				MedicalRecord medicalRecord = new MedicalRecord();
-				medicalRecord.setFirstName((String) jsonMedicalRecord.get("firstName"));
-				medicalRecord.setLastName((String) jsonMedicalRecord.get("lastName"));
-				medicalRecord.setBirthDate((String) jsonMedicalRecord.get("birthdate"));
-
-				JSONArray jsonMedications = (JSONArray) jsonMedicalRecord.get("medications");
-				ArrayList<String> medications = new ArrayList<>();
-				for (Object obj : jsonMedications)
-				{
-					medications.add((String) obj);
-				}
-
-				JSONArray jsonAllergies = (JSONArray) jsonMedicalRecord.get("allergies");
-				ArrayList<String> allergies = new ArrayList<>();
-				for (Object obj : jsonAllergies)
-				{
-					allergies.add((String) obj);
-				}
-
-				medicalRecord.setMedications(medications);
-				medicalRecord.setAllergies(allergies);
-				medicalRecords.add(medicalRecord);
-			}
-
-		} catch (IOException e)
-		{
-			logger.error("Unable to open json file");
-		} catch (ParseException e)
-		{
-			logger.error("Error parsing json file");
+			logger.info("No person provided");
+			return;
 		}
+		ArrayList<Person> persons = data.getPersons();
+		persons.add(person);
+		data.setPersons(persons);
+		writeData();
+	}
 
-		return medicalRecords;
+	protected void deletePerson(Person person)
+	{
+		if (person == null)
+		{
+			logger.info("No person provided");
+			return;
+		}
+		ArrayList<Person> persons = data.getPersons();
+		persons.remove(person);
+		data.setPersons(persons);
+		writeData();
+	}
+
+	public ArrayList<Firestation> getFirestations()
+	{
+		readData();
+		return data.getFirestations();
+	}
+
+	public ArrayList<MedicalRecord> getMedicalRecords()
+	{
+		readData();
+		return data.getMedicalRecords();
 	}
 }

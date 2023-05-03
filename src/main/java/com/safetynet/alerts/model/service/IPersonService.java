@@ -10,5 +10,5 @@ public interface IPersonService
 	Person getPersonByName(String firstName, String lastName);
 	void createPerson(Person person);
 	void modifyPerson(Person person);
-	void deletePerson(String name);
+	void deletePerson(Person person);
 }
