@@ -18,6 +18,7 @@ import java.util.ArrayList;
  * Singleton that read and write Json Data
  */
 @Component
+@SuppressWarnings("unchecked")
 class JsonReader
 {
 	private static final Logger logger = LogManager.getLogger();
@@ -235,7 +236,7 @@ class JsonReader
 	 */
 	protected void addPerson(Person person)
 	{
-		if (person.equals(null))
+		if (person == null)
 		{
 			logger.info("No person provided");
 			return;
@@ -265,9 +266,61 @@ class JsonReader
 		return data.getFirestations();
 	}
 
+	protected void addFirestation(Firestation firestation)
+	{
+		if (firestation == null)
+		{
+			logger.info("No firestation provided");
+			return;
+		}
+		ArrayList<Firestation> firestations = data.getFirestations();
+		firestations.add(firestation);
+		data.setFirestations(firestations);
+		writeData();
+	}
+
+	protected void deleteFirestation(Firestation firestation)
+	{
+		if (firestation == null)
+		{
+			logger.info("No firestation provided");
+			return;
+		}
+		ArrayList<Firestation> firestations = data.getFirestations();
+		firestations.remove(firestation);
+		data.setFirestations(firestations);
+		writeData();
+	}
+
 	public ArrayList<MedicalRecord> getMedicalRecords()
 	{
 		readData();
 		return data.getMedicalRecords();
+	}
+
+	protected void addMedicalRecords(MedicalRecord medicalRecord)
+	{
+		if (medicalRecord == null)
+		{
+			logger.info("No medical record provided");
+			return;
+		}
+		ArrayList<MedicalRecord> medicalRecords = data.getMedicalRecords();
+		medicalRecords.add(medicalRecord);
+		data.setMedicalRecords(medicalRecords);
+		writeData();
+	}
+
+	protected void deleteMedicalRecords(MedicalRecord medicalRecord)
+	{
+		if (medicalRecord == null)
+		{
+			logger.info("No medical record provided");
+			return;
+		}
+		ArrayList<MedicalRecord> medicalRecords = data.getMedicalRecords();
+		medicalRecords.remove(medicalRecord);
+		data.setMedicalRecords(medicalRecords);
+		writeData();
 	}
 }

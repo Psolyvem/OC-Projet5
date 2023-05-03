@@ -12,11 +12,13 @@ public class PersonService implements IPersonService
 {
 	private static final Logger logger = LogManager.getLogger();
 
+	@Override
 	public ArrayList<Person> getPersons()
 	{
 		return JsonReader.getInstance().getPersons();
 	}
 
+	@Override
 	public Person getPersonByName(String firstName, String lastName)
 	{
 		ArrayList<Person> persons = getPersons();
@@ -32,6 +34,7 @@ public class PersonService implements IPersonService
 		return null;
 	}
 
+	@Override
 	public void createPerson(Person person)
 	{
 		if (getPersonByName(person.getFirstName(), person.getLastName()) != null)
@@ -44,6 +47,7 @@ public class PersonService implements IPersonService
 		}
 	}
 
+	@Override
 	public void modifyPerson(Person person)
 	{
 		if (getPersonByName(person.getFirstName(), person.getLastName()) == null)
@@ -57,6 +61,7 @@ public class PersonService implements IPersonService
 		}
 	}
 
+	@Override
 	public void deletePerson(Person person)
 	{
 		JsonReader.getInstance().deletePerson(person);
