@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 @SpringBootTest
 public class PersonServiceTest
@@ -69,6 +70,6 @@ public class PersonServiceTest
 	{
 		personService.deletePerson(person);
 
-		assertEquals(null, personService.getPersonByName("Jean", "Bon"));
+		assertNull(personService.getPersonByName("Jean", "Bon"));
 	}
 }

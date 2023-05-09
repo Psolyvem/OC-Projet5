@@ -190,18 +190,12 @@ class JsonReader
 			jsonMedicalRecord.put("birthdate", medicalRecord.getBirthDate());
 			JSONArray jsonMedications = new JSONArray();
 			ArrayList<String> medications = medicalRecord.getMedications();
-			for (String medication : medications)
-			{
-				jsonMedications.add(medication);
-			}
+			jsonMedications.addAll(medications);
 			jsonMedicalRecord.put("medications", jsonMedications);
 
 			JSONArray jsonAllergies = new JSONArray();
 			ArrayList<String> allergies = medicalRecord.getAllergies();
-			for (String allergie : allergies)
-			{
-				jsonAllergies.add(allergie);
-			}
+			jsonAllergies.addAll(allergies);
 			jsonMedicalRecord.put("allergies", jsonAllergies);
 			jsonMedicalRecords.add(jsonMedicalRecord);
 		}

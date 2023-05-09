@@ -10,24 +10,24 @@ import java.util.ArrayList;
 public class PersonController
 {
 	PersonService personService = new PersonService();
-//	@GetMapping("/person")
-//	public ArrayList<Person> getPerson()
-//	{
-//		return personService.getPersons();
-//	}
-//	@PostMapping("/person")
-//	public void postPerson()
-//	{
-//
-//	}
-//	@PutMapping("/person")
-//	public void putPerson()
-//	{
-//
-//	}
-//	@DeleteMapping("/person")
-//	public void deletePerson()
-//	{
-//
-//	}
+	@GetMapping("/person")
+	public ArrayList<Person> getPerson()
+	{
+		return personService.getPersons();
+	}
+	@PostMapping("/person")
+	public void postPerson()
+	{
+
+	}
+	@PutMapping("/person")
+	public void putPerson()
+	{
+
+	}
+	@DeleteMapping("/person")
+	public void deletePerson()
+	{
+
+	}
 }
