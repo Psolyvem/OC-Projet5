@@ -1,29 +1,36 @@
 package com.safetynet.alerts.controller;
 
+import com.safetynet.alerts.model.bean.MedicalRecord;
+import com.safetynet.alerts.model.service.MedicalRecordService;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+
 @RestController
+@RequestMapping("/medicalrecord")
 public class MedicalRecordController
 {
-//	@GetMapping("/medicalrecord")
-//	public MedicalRecord getMedicalRecord(@RequestParam(name = "id", defaultValue = "") int id)
-//	{
-//		return JsonReader.readMedicalRecords("src/main/resources/data.json").get(id);
-//	}
+	MedicalRecordService medicalRecordService = new MedicalRecordService();
 
-	@PostMapping("/medicalrecord")
-	public void postMedicalRecord()
+	@RequestMapping(method = RequestMethod.GET)
+	public ArrayList<MedicalRecord> getMedicalRecords(/*@RequestParam(name = "id", defaultValue = "") int id*/)
 	{
-
+		return medicalRecordService.getMedicalRecords();
 	}
-	@PutMapping("/medicalrecord")
-	public void putMedicalRecord()
-	{
 
+	@RequestMapping(method = RequestMethod.POST)
+	public void postMedicalRecord(@RequestBody MedicalRecord medicalRecord)
+	{
+		medicalRecordService.createMedicalRecord(medicalRecord);
 	}
-	@DeleteMapping("/medicalrecord")
-	public void deleteMedicalRecord()
+	@RequestMapping(method = RequestMethod.PUT)
+	public void putMedicalRecord(@RequestBody MedicalRecord medicalRecord)
 	{
-
+		medicalRecordService.modifyMedicalRecord(medicalRecord);
+	}
+	@RequestMapping(method = RequestMethod.DELETE)
+	public void deleteMedicalRecord(@RequestBody MedicalRecord medicalRecord)
+	{
+		medicalRecordService.deleteMedicalRecord(medicalRecord);
 	}
 }

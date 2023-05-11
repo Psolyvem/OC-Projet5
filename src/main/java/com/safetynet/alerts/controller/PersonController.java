@@ -6,28 +6,29 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 
-@RestController("/person")
+@RestController
+@RequestMapping("/person")
 public class PersonController
 {
 	PersonService personService = new PersonService();
-	@GetMapping("/person")
-	public ArrayList<Person> getPerson()
+	@RequestMapping(method = RequestMethod.GET)
+	public ArrayList<Person> getPersons()
 	{
 		return personService.getPersons();
 	}
-	@PostMapping("/person")
-	public void postPerson()
+	@RequestMapping(method = RequestMethod.POST)
+	public void postPerson(@RequestBody Person person)
 	{
-
+		personService.createPerson(person);
 	}
-	@PutMapping("/person")
-	public void putPerson()
+	@RequestMapping(method = RequestMethod.PUT)
+	public void putPerson(@RequestBody Person person)
 	{
-
+		personService.modifyPerson(person);
 	}
-	@DeleteMapping("/person")
-	public void deletePerson()
+	@RequestMapping(method = RequestMethod.DELETE)
+	public void deletePerson(@RequestBody Person person)
 	{
-
+		personService.deletePerson(person);
 	}
 }
