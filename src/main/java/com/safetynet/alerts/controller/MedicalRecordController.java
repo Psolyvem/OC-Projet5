@@ -13,7 +13,7 @@ public class MedicalRecordController
 	MedicalRecordService medicalRecordService = new MedicalRecordService();
 
 	@RequestMapping(method = RequestMethod.GET)
-	public ArrayList<MedicalRecord> getMedicalRecords(/*@RequestParam(name = "id", defaultValue = "") int id*/)
+	public ArrayList<MedicalRecord> getMedicalRecords()
 	{
 		return medicalRecordService.getMedicalRecords();
 	}

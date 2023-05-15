@@ -12,14 +12,17 @@ import org.springframework.stereotype.Component;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Singleton that read and write Json Data
  */
 @Component
 @SuppressWarnings("unchecked")
-class JsonReader
+public class JsonReader
 {
 	private static final Logger logger = LogManager.getLogger();
 	private static JsonReader instance;
@@ -316,5 +319,26 @@ class JsonReader
 		medicalRecords.remove(medicalRecord);
 		data.setMedicalRecords(medicalRecords);
 		writeData();
+	}
+
+	/**
+	 * Transform a date from the format MM/dd/yyyy to a Java Date Object
+	 *
+	 * @param date A String in the format MM/dd/yyyy
+	 * @return The date in a Java Object format
+	 */
+	public LocalDate jsonDateToJavaDate(String date)
+	{
+
+		int month = Integer.parseInt(date.substring(0, date.indexOf('/')));
+		int day = Integer.parseInt(date.substring(date.indexOf('/') + 1, date.indexOf('/', date.indexOf('/') + 1)));
+		int year = Integer.parseInt(date.substring(date.lastIndexOf('/') + 1));
+		return LocalDate.of(year, month, day);
+
+	}
+
+	public String javaDateToJsonDate(LocalDate date)
+	{
+		return date.getMonth() + "/" + date.getDayOfMonth() + "/" + date.getYear();
 	}
 }
