@@ -12,10 +12,8 @@ import org.springframework.stereotype.Component;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
  * Singleton that read and write Json Data
