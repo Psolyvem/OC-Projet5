@@ -15,18 +15,17 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 
 @RestController
-@RequestMapping("/firestation")
 public class FirestationController
 {
 	FirestationService firestationService = new FirestationService();
 
-	@RequestMapping(method = RequestMethod.GET, params = "!stationNumber")
+	@GetMapping(path = "/firestation", params = "!stationNumber")
 	public ArrayList<Firestation> getFirestations(@RequestParam(name = "stationNumber", defaultValue = "", required = false) Integer stationNumber)
 	{
 		return firestationService.getFirestations();
 	}
 
-	@RequestMapping(method = RequestMethod.GET, params = "stationNumber")
+	@GetMapping(path = "/firestation", params = "stationNumber")
 	public JSONObject getFirestationCoverage(@RequestParam(name = "stationNumber", defaultValue = "0") Integer stationNumber)
 	{
 		JSONObject response = new JSONObject();
@@ -70,19 +69,19 @@ public class FirestationController
 		return response;
 	}
 
-	@RequestMapping(method = RequestMethod.POST)
+	@PostMapping("/firestation")
 	public void postFirestation(@RequestBody Firestation firestation)
 	{
 		firestationService.createFirestation(firestation);
 	}
 
-	@RequestMapping(method = RequestMethod.PUT)
+	@PutMapping("/firestation")
 	public void putFirestation(@RequestBody Firestation firestation)
 	{
 		firestationService.modifyFirestation(firestation);
 	}
 
-	@RequestMapping(method = RequestMethod.DELETE)
+	@DeleteMapping("/firestation")
 	public void deleteFirestation(@RequestBody Firestation firestation)
 	{
 		firestationService.deleteFirestation(firestation);

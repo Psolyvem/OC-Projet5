@@ -4,21 +4,17 @@ import com.safetynet.alerts.model.bean.Firestation;
 import com.safetynet.alerts.model.bean.Person;
 import com.safetynet.alerts.model.service.FirestationService;
 import com.safetynet.alerts.model.service.PersonService;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/phoneAlert")
 @SuppressWarnings("unchecked")
 public class PhoneAlertController
 {
-	@RequestMapping(method = RequestMethod.GET, params = "firestation")
+	@GetMapping(path = "/phoneAlert", params = "firestation")
 	public JSONObject getPhoneNumberByStation(@RequestParam(name = "firestation", defaultValue = "") Integer firestationNumber)
 	{
 		JSONObject response = new JSONObject();

@@ -1,21 +1,19 @@
 package com.safetynet.alerts.model.service;
 
 import com.safetynet.alerts.model.bean.MedicalRecord;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.tinylog.Logger;
 
 import java.util.ArrayList;
 
-@Component
-public class MedicalRecordService implements IMedicalRecordService
+@Service
+public class MedicalRecordService
 {
-	@Override
 	public ArrayList<MedicalRecord> getMedicalRecords()
 	{
 		return JsonReader.getInstance().getMedicalRecords();
 	}
 
-	@Override
 	public MedicalRecord getMedicalRecordByName(String firstName, String lastName)
 	{
 		ArrayList<MedicalRecord> medicalRecords = getMedicalRecords();
@@ -30,7 +28,6 @@ public class MedicalRecordService implements IMedicalRecordService
 		return null;
 	}
 
-	@Override
 	public void createMedicalRecord(MedicalRecord medicalRecord)
 	{
 		if (getMedicalRecordByName(medicalRecord.getFirstName(), medicalRecord.getLastName()) != null)
@@ -43,7 +40,6 @@ public class MedicalRecordService implements IMedicalRecordService
 		}
 	}
 
-	@Override
 	public void modifyMedicalRecord(MedicalRecord medicalRecord)
 	{
 		if (getMedicalRecordByName(medicalRecord.getFirstName(), medicalRecord.getLastName()) == null)
@@ -57,7 +53,6 @@ public class MedicalRecordService implements IMedicalRecordService
 		}
 	}
 
-	@Override
 	public void deleteMedicalRecord(MedicalRecord medicalRecord)
 	{
 		JsonReader.getInstance().deleteMedicalRecords(medicalRecord);

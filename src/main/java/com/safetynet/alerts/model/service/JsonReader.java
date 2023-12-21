@@ -5,7 +5,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.tinylog.Logger;
 
 import java.io.FileReader;
@@ -17,7 +17,7 @@ import java.util.ArrayList;
 /**
  * Singleton that read and write Json Data
  */
-@Component
+@Service
 @SuppressWarnings("unchecked")
 public class JsonReader
 {

@@ -7,28 +7,28 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 
 @RestController
-@RequestMapping("/medicalrecord")
+
 public class MedicalRecordController
 {
 	MedicalRecordService medicalRecordService = new MedicalRecordService();
 
-	@RequestMapping(method = RequestMethod.GET)
+	@GetMapping("/medicalrecord")
 	public ArrayList<MedicalRecord> getMedicalRecords()
 	{
 		return medicalRecordService.getMedicalRecords();
 	}
 
-	@RequestMapping(method = RequestMethod.POST)
+	@PostMapping("/medicalrecord")
 	public void postMedicalRecord(@RequestBody MedicalRecord medicalRecord)
 	{
 		medicalRecordService.createMedicalRecord(medicalRecord);
 	}
-	@RequestMapping(method = RequestMethod.PUT)
+	@PutMapping("/medicalrecord")
 	public void putMedicalRecord(@RequestBody MedicalRecord medicalRecord)
 	{
 		medicalRecordService.modifyMedicalRecord(medicalRecord);
 	}
-	@RequestMapping(method = RequestMethod.DELETE)
+	@DeleteMapping("/medicalrecord")
 	public void deleteMedicalRecord(@RequestBody MedicalRecord medicalRecord)
 	{
 		medicalRecordService.deleteMedicalRecord(medicalRecord);

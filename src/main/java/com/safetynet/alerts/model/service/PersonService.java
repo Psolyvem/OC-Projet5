@@ -1,22 +1,19 @@
 package com.safetynet.alerts.model.service;
 
 import com.safetynet.alerts.model.bean.Person;
-
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.tinylog.Logger;
 
 import java.util.ArrayList;
 
-@Component
-public class PersonService implements IPersonService
+@Service
+public class PersonService
 {
-	@Override
 	public ArrayList<Person> getPersons()
 	{
 		return JsonReader.getInstance().getPersons();
 	}
 
-	@Override
 	public Person getPersonByName(String firstName, String lastName)
 	{
 		ArrayList<Person> persons = getPersons();
@@ -32,7 +29,6 @@ public class PersonService implements IPersonService
 		return null;
 	}
 
-	@Override
 	public void createPerson(Person person)
 	{
 		if (getPersonByName(person.getFirstName(), person.getLastName()) != null)
@@ -45,7 +41,6 @@ public class PersonService implements IPersonService
 		}
 	}
 
-	@Override
 	public void modifyPerson(Person person)
 	{
 		if (getPersonByName(person.getFirstName(), person.getLastName()) == null)
@@ -59,7 +54,6 @@ public class PersonService implements IPersonService
 		}
 	}
 
-	@Override
 	public void deletePerson(Person person)
 	{
 		JsonReader.getInstance().deletePerson(person);
