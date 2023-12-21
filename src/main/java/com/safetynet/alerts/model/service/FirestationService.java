@@ -1,17 +1,14 @@
 package com.safetynet.alerts.model.service;
 
 import com.safetynet.alerts.model.bean.Firestation;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
+import org.tinylog.Logger;
 
 import java.util.ArrayList;
 
 @Component
 public class FirestationService implements IFirestationService
 {
-	private static final Logger logger = LogManager.getLogger();
-
 	@Override
 	public ArrayList<Firestation> getFirestations()
 	{
@@ -29,7 +26,7 @@ public class FirestationService implements IFirestationService
 				return firestation;
 			}
 		}
-		logger.info("Firestation not found");
+		Logger.info("Firestation not found");
 		return null;
 	}
 
@@ -38,7 +35,7 @@ public class FirestationService implements IFirestationService
 	{
 		if (getFirestationByAddress(firestation.getAddress()) != null)
 		{
-			logger.info("Unable to create firestation : already exist");
+			Logger.info("Unable to create firestation : already exist");
 		}
 		else
 		{
@@ -51,7 +48,7 @@ public class FirestationService implements IFirestationService
 	{
 		if (getFirestationByAddress(firestation.getAddress()) == null)
 		{
-			logger.info("Unable to modify firestation : does not exist");
+			Logger.info("Unable to modify firestation : does not exist");
 		}
 		else
 		{

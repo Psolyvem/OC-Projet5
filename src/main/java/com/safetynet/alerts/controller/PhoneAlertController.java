@@ -18,8 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 @SuppressWarnings("unchecked")
 public class PhoneAlertController
 {
-	private static final Logger logger = LogManager.getLogger();
-
 	@RequestMapping(method = RequestMethod.GET, params = "firestation")
 	public JSONObject getPhoneNumberByStation(@RequestParam(name = "firestation", defaultValue = "") Integer firestationNumber)
 	{

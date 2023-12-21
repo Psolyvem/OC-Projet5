@@ -1,13 +1,12 @@
 package com.safetynet.alerts.model.service;
 
 import com.safetynet.alerts.model.bean.*;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Component;
+import org.tinylog.Logger;
 
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -22,7 +21,6 @@ import java.util.ArrayList;
 @SuppressWarnings("unchecked")
 public class JsonReader
 {
-	private static final Logger logger = LogManager.getLogger();
 	private static JsonReader instance;
 	private JsonData data;
 
@@ -46,7 +44,7 @@ public class JsonReader
 	 */
 	protected JsonData readData()
 	{
-		logger.info("Reading data from data.json");
+		Logger.info("Reading data from data.json");
 
 		try
 		{
@@ -58,7 +56,7 @@ public class JsonReader
 			ArrayList<Person> persons = new ArrayList<>();
 			if (jsonPersons == null)
 			{
-				logger.info("No data found for : persons");
+				Logger.info("No data found for : persons");
 			}
 			else
 			{
@@ -83,7 +81,7 @@ public class JsonReader
 			ArrayList<Firestation> firestations = new ArrayList<>();
 			if (jsonFirestations == null)
 			{
-				logger.info("No data found for : firestations");
+				Logger.info("No data found for : firestations");
 			}
 			else
 			{
@@ -102,7 +100,7 @@ public class JsonReader
 			ArrayList<MedicalRecord> medicalRecords = new ArrayList<>();
 			if (jsonMedicalRecords == null)
 			{
-				logger.info("No data found for : medical records");
+				Logger.info("No data found for : medical records");
 			}
 			else
 			{
@@ -141,10 +139,10 @@ public class JsonReader
 
 		} catch (IOException e)
 		{
-			logger.error("Unable to open json file");
+			Logger.error("Unable to open json file");
 		} catch (ParseException e)
 		{
-			logger.error("Error parsing json file");
+			Logger.error("Error parsing json file");
 		}
 
 		return data;
@@ -152,7 +150,7 @@ public class JsonReader
 
 	private void writeData()
 	{
-		logger.info("Writing data to data.json");
+		Logger.info("Writing data to data.json");
 		JSONObject jsonFile = new JSONObject();
 
 		// Mapping Java objects to Json data
@@ -213,7 +211,7 @@ public class JsonReader
 			writer.close();
 		} catch (IOException e)
 		{
-			logger.error("Unable to write in json file");
+			Logger.error("Unable to write in json file");
 		}
 	}
 
@@ -233,7 +231,7 @@ public class JsonReader
 	{
 		if (person == null)
 		{
-			logger.info("No person provided");
+			Logger.info("No person provided");
 			return;
 		}
 		ArrayList<Person> persons = data.getPersons();
@@ -246,7 +244,7 @@ public class JsonReader
 	{
 		if (person == null)
 		{
-			logger.info("No person provided");
+			Logger.info("No person provided");
 			return;
 		}
 		ArrayList<Person> persons = data.getPersons();
@@ -265,7 +263,7 @@ public class JsonReader
 	{
 		if (firestation == null)
 		{
-			logger.info("No firestation provided");
+			Logger.info("No firestation provided");
 			return;
 		}
 		ArrayList<Firestation> firestations = data.getFirestations();
@@ -278,7 +276,7 @@ public class JsonReader
 	{
 		if (firestation == null)
 		{
-			logger.info("No firestation provided");
+			Logger.info("No firestation provided");
 			return;
 		}
 		ArrayList<Firestation> firestations = data.getFirestations();
@@ -297,7 +295,7 @@ public class JsonReader
 	{
 		if (medicalRecord == null)
 		{
-			logger.info("No medical record provided");
+			Logger.info("No medical record provided");
 			return;
 		}
 		ArrayList<MedicalRecord> medicalRecords = data.getMedicalRecords();
@@ -310,7 +308,7 @@ public class JsonReader
 	{
 		if (medicalRecord == null)
 		{
-			logger.info("No medical record provided");
+			Logger.info("No medical record provided");
 			return;
 		}
 		ArrayList<MedicalRecord> medicalRecords = data.getMedicalRecords();

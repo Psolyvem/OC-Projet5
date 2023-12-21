@@ -16,7 +16,6 @@ import java.util.ArrayList;
 
 @RestController
 @RequestMapping("/firestation")
-@SuppressWarnings("unchecked")
 public class FirestationController
 {
 	FirestationService firestationService = new FirestationService();

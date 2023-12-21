@@ -4,8 +4,6 @@ import com.safetynet.alerts.model.bean.Person;
 import com.safetynet.alerts.model.service.JsonReader;
 import com.safetynet.alerts.model.service.MedicalRecordService;
 import com.safetynet.alerts.model.service.PersonService;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,8 +19,6 @@ import java.time.temporal.ChronoUnit;
 @SuppressWarnings("unchecked")
 public class ChildAlertController
 {
-	private static final Logger logger = LogManager.getLogger();
-
 	@RequestMapping(method = RequestMethod.GET, params = "address")
 	public JSONObject getChildAlert(@RequestParam(name = "address", defaultValue = "") String address)
 	{

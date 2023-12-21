@@ -1,17 +1,14 @@
 package com.safetynet.alerts.model.service;
 
 import com.safetynet.alerts.model.bean.MedicalRecord;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
+import org.tinylog.Logger;
 
 import java.util.ArrayList;
 
 @Component
 public class MedicalRecordService implements IMedicalRecordService
 {
-	private static final Logger logger = LogManager.getLogger();
-
 	@Override
 	public ArrayList<MedicalRecord> getMedicalRecords()
 	{
@@ -29,7 +26,7 @@ public class MedicalRecordService implements IMedicalRecordService
 				return medicalRecord;
 			}
 		}
-		logger.info("Medical record not found");
+		Logger.info("Medical record not found");
 		return null;
 	}
 
@@ -38,7 +35,7 @@ public class MedicalRecordService implements IMedicalRecordService
 	{
 		if (getMedicalRecordByName(medicalRecord.getFirstName(), medicalRecord.getLastName()) != null)
 		{
-			logger.error("Unable to create medical record : already exist");
+			Logger.info("Unable to create medical record : already exist");
 		}
 		else
 		{
@@ -51,7 +48,7 @@ public class MedicalRecordService implements IMedicalRecordService
 	{
 		if (getMedicalRecordByName(medicalRecord.getFirstName(), medicalRecord.getLastName()) == null)
 		{
-			logger.info("Unable to modify medical record : does not exist");
+			Logger.info("Unable to modify medical record : does not exist");
 		}
 		else
 		{

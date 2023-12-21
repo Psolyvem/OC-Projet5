@@ -1,17 +1,15 @@
 package com.safetynet.alerts.model.service;
 
 import com.safetynet.alerts.model.bean.Person;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+
 import org.springframework.stereotype.Component;
+import org.tinylog.Logger;
 
 import java.util.ArrayList;
 
 @Component
 public class PersonService implements IPersonService
 {
-	private static final Logger logger = LogManager.getLogger();
-
 	@Override
 	public ArrayList<Person> getPersons()
 	{
@@ -30,7 +28,7 @@ public class PersonService implements IPersonService
 			}
 		}
 
-		logger.info("Person not found");
+		Logger.info("Person not found");
 		return null;
 	}
 
@@ -39,7 +37,7 @@ public class PersonService implements IPersonService
 	{
 		if (getPersonByName(person.getFirstName(), person.getLastName()) != null)
 		{
-			logger.error("Unable to create person : already exist");
+			Logger.error("Unable to create person : already exist");
 		}
 		else
 		{
@@ -52,7 +50,7 @@ public class PersonService implements IPersonService
 	{
 		if (getPersonByName(person.getFirstName(), person.getLastName()) == null)
 		{
-			logger.error("Unable to modify person : does not exist");
+			Logger.error("Unable to modify person : does not exist");
 		}
 		else
 		{
