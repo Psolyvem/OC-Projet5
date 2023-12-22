@@ -7,13 +7,15 @@ import org.tinylog.Logger;
 import java.util.ArrayList;
 
 @Service
-public class FirestationService
+public class FirestationService implements IFirestationService
 {
+	@Override
 	public ArrayList<Firestation> getFirestations()
 	{
 		return JsonReader.getInstance().getFirestations();
 	}
 
+	@Override
 	public Firestation getFirestationByAddress(String address)
 	{
 		ArrayList<Firestation> firestations = getFirestations();
@@ -28,6 +30,7 @@ public class FirestationService
 		return null;
 	}
 
+	@Override
 	public void createFirestation(Firestation firestation)
 	{
 		if (getFirestationByAddress(firestation.getAddress()) != null)
@@ -40,6 +43,7 @@ public class FirestationService
 		}
 	}
 
+	@Override
 	public void modifyFirestation(Firestation firestation)
 	{
 		if (getFirestationByAddress(firestation.getAddress()) == null)
@@ -53,6 +57,7 @@ public class FirestationService
 		}
 	}
 
+	@Override
 	public void deleteFirestation(Firestation firestation)
 	{
 		JsonReader.getInstance().deleteFirestation(firestation);

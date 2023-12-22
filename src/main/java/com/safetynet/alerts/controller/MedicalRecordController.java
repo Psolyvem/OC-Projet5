@@ -1,7 +1,8 @@
 package com.safetynet.alerts.controller;
 
 import com.safetynet.alerts.model.bean.MedicalRecord;
-import com.safetynet.alerts.model.service.MedicalRecordService;
+import com.safetynet.alerts.model.service.IMedicalRecordService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -10,7 +11,8 @@ import java.util.ArrayList;
 
 public class MedicalRecordController
 {
-	MedicalRecordService medicalRecordService = new MedicalRecordService();
+	@Autowired
+	IMedicalRecordService medicalRecordService;
 
 	@GetMapping("/medicalrecord")
 	public ArrayList<MedicalRecord> getMedicalRecords()

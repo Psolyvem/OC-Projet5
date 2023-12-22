@@ -7,13 +7,15 @@ import org.tinylog.Logger;
 import java.util.ArrayList;
 
 @Service
-public class MedicalRecordService
+public class MedicalRecordService implements IMedicalRecordService
 {
+	@Override
 	public ArrayList<MedicalRecord> getMedicalRecords()
 	{
 		return JsonReader.getInstance().getMedicalRecords();
 	}
 
+	@Override
 	public MedicalRecord getMedicalRecordByName(String firstName, String lastName)
 	{
 		ArrayList<MedicalRecord> medicalRecords = getMedicalRecords();
@@ -28,6 +30,7 @@ public class MedicalRecordService
 		return null;
 	}
 
+	@Override
 	public void createMedicalRecord(MedicalRecord medicalRecord)
 	{
 		if (getMedicalRecordByName(medicalRecord.getFirstName(), medicalRecord.getLastName()) != null)
@@ -40,6 +43,7 @@ public class MedicalRecordService
 		}
 	}
 
+	@Override
 	public void modifyMedicalRecord(MedicalRecord medicalRecord)
 	{
 		if (getMedicalRecordByName(medicalRecord.getFirstName(), medicalRecord.getLastName()) == null)
@@ -53,6 +57,7 @@ public class MedicalRecordService
 		}
 	}
 
+	@Override
 	public void deleteMedicalRecord(MedicalRecord medicalRecord)
 	{
 		JsonReader.getInstance().deleteMedicalRecords(medicalRecord);

@@ -2,6 +2,7 @@ package com.safetynet.alerts.controller;
 
 import com.safetynet.alerts.model.bean.Person;
 import com.safetynet.alerts.model.service.PersonService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -9,7 +10,8 @@ import java.util.ArrayList;
 @RestController
 public class PersonController
 {
-	PersonService personService = new PersonService();
+	@Autowired
+	PersonService personService;
 	@GetMapping("/person")
 	public ArrayList<Person> getPersons()
 	{

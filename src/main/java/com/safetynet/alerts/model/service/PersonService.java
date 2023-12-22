@@ -7,13 +7,15 @@ import org.tinylog.Logger;
 import java.util.ArrayList;
 
 @Service
-public class PersonService
+public class PersonService implements IPersonService
 {
+	@Override
 	public ArrayList<Person> getPersons()
 	{
 		return JsonReader.getInstance().getPersons();
 	}
 
+	@Override
 	public Person getPersonByName(String firstName, String lastName)
 	{
 		ArrayList<Person> persons = getPersons();
@@ -29,6 +31,7 @@ public class PersonService
 		return null;
 	}
 
+	@Override
 	public void createPerson(Person person)
 	{
 		if (getPersonByName(person.getFirstName(), person.getLastName()) != null)
@@ -41,6 +44,7 @@ public class PersonService
 		}
 	}
 
+	@Override
 	public void modifyPerson(Person person)
 	{
 		if (getPersonByName(person.getFirstName(), person.getLastName()) == null)
@@ -54,6 +58,7 @@ public class PersonService
 		}
 	}
 
+	@Override
 	public void deletePerson(Person person)
 	{
 		JsonReader.getInstance().deletePerson(person);
