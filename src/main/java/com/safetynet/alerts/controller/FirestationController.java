@@ -25,10 +25,11 @@ public class FirestationController
 	}
 
 	@GetMapping(path = "/firestation", params = "address")
-	public String getFirestationByAddress(@RequestParam(name = "address") String address)
+	public Firestation getFirestationByAddress(@RequestParam(name = "address") String address)
 	{
-		return firestationService.getFirestationByAddress(address).getStation();
+			return firestationService.getFirestationByAddress(address);
 	}
+
 
 	@PostMapping("/firestation")
 	public void postFirestation(@RequestBody Firestation firestation)

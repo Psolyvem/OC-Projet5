@@ -15,13 +15,16 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 /**
- * Singleton that read and write Json Data
+ * Singleton that read and write Json Data<br>
+ * Contains a JsonData object with the last readings of the data<br>
+ * Pending changes must be added by setting the JsonData with setData(), then written in the json file with write()
  */
 @Service
 @SuppressWarnings("unchecked")
 public class JsonReader
 {
 	private static JsonReader instance;
+
 	private JsonData data;
 
 	private JsonReader()
@@ -42,7 +45,7 @@ public class JsonReader
 	/**
 	 * @return The data in the data.json file as a JsonData object
 	 */
-	protected JsonData readData()
+	public JsonData readData()
 	{
 		Logger.info("Reading data from data.json");
 
@@ -148,7 +151,7 @@ public class JsonReader
 		return data;
 	}
 
-	private void writeData()
+	public void writeData()
 	{
 		Logger.info("Writing data to data.json");
 		JSONObject jsonFile = new JSONObject();
@@ -215,95 +218,6 @@ public class JsonReader
 		}
 	}
 
-	protected ArrayList<Person> getPersons()
-	{
-		readData();
-		return data.getPersons();
-	}
-
-	/**
-	 * Add a person to the list and writes it
-	 * Does not check if the person already exist, but check if null;
-	 *
-	 * @param person the person to add
-	 */
-	protected void addPerson(Person person)
-	{
-		if (person == null)
-		{
-			Logger.info("No person provided");
-			return;
-		}
-		ArrayList<Person> persons = data.getPersons();
-		persons.add(person);
-		data.setPersons(persons);
-		writeData();
-	}
-
-	protected void deletePerson(Person person)
-	{
-		if (person == null)
-		{
-			Logger.info("No person provided");
-			return;
-		}
-		ArrayList<Person> persons = data.getPersons();
-		persons.remove(person);
-		data.setPersons(persons);
-		writeData();
-	}
-
-	public ArrayList<Firestation> getFirestations()
-	{
-		readData();
-		return data.getFirestations();
-	}
-
-	protected void addFirestation(Firestation firestation)
-	{
-		if (firestation == null)
-		{
-			Logger.info("No firestation provided");
-			return;
-		}
-		ArrayList<Firestation> firestations = data.getFirestations();
-		firestations.add(firestation);
-		data.setFirestations(firestations);
-		writeData();
-	}
-
-	protected void deleteFirestation(Firestation firestation)
-	{
-		if (firestation == null)
-		{
-			Logger.info("No firestation provided");
-			return;
-		}
-		ArrayList<Firestation> firestations = data.getFirestations();
-		firestations.remove(firestation);
-		data.setFirestations(firestations);
-		writeData();
-	}
-
-	public ArrayList<MedicalRecord> getMedicalRecords()
-	{
-		readData();
-		return data.getMedicalRecords();
-	}
-
-	protected void addMedicalRecords(MedicalRecord medicalRecord)
-	{
-		if (medicalRecord == null)
-		{
-			Logger.info("No medical record provided");
-			return;
-		}
-		ArrayList<MedicalRecord> medicalRecords = data.getMedicalRecords();
-		medicalRecords.add(medicalRecord);
-		data.setMedicalRecords(medicalRecords);
-		writeData();
-	}
-
 	protected void deleteMedicalRecords(MedicalRecord medicalRecord)
 	{
 		if (medicalRecord == null)
@@ -336,5 +250,15 @@ public class JsonReader
 	public String javaDateToJsonDate(LocalDate date)
 	{
 		return date.getMonth() + "/" + date.getDayOfMonth() + "/" + date.getYear();
+	}
+
+	public JsonData getData()
+	{
+		return data;
+	}
+
+	public void setData(JsonData data)
+	{
+		this.data = data;
 	}
 }
