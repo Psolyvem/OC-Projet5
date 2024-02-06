@@ -4,6 +4,7 @@ import com.safetynet.alerts.model.bean.MedicalRecord;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
@@ -14,18 +15,17 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 @SpringBootTest
 public class MedicalRecordServiceTest
 {
+	@Autowired
 	MedicalRecordService medicalRecordService;
+	@Autowired
 	MedicalRecord medicalRecord;
 
 	@BeforeEach
 	public void setUp()
 	{
-		medicalRecordService = new MedicalRecordService();
-
-		medicalRecord = new MedicalRecord();
 		medicalRecord.setFirstName("Jean");
-		medicalRecord.setLastName("Bon");
-		medicalRecord.setBirthDate("20/01/1982");
+		medicalRecord.setLastName("Test");
+		medicalRecord.setBirthDate("01/20/1982");
 		medicalRecord.setAllergies(new ArrayList<>(){{add("fleur"); add("judo");}});
 		medicalRecord.setMedications(new ArrayList<>(){{add("doliprane:1000mg"); add("gaspacho:100mg");}});
 		medicalRecordService.createMedicalRecord(medicalRecord);
@@ -40,16 +40,16 @@ public class MedicalRecordServiceTest
 	@Test
 	public void createMedicalRecordTest()
 	{
-		assertEquals(medicalRecord, medicalRecordService.getMedicalRecordByName("Jean", "Bon"));
+		assertEquals(medicalRecord, medicalRecordService.getMedicalRecordByName("Jean", "Test"));
 	}
 
 	@Test
 	public void modifyMedicalRecordTest()
 	{
-		medicalRecord.setBirthDate("31/12/1980");
+		medicalRecord.setBirthDate("12/31/1980");
 		medicalRecordService.modifyMedicalRecord(medicalRecord);
 
-		assertEquals("31/12/1980", medicalRecordService.getMedicalRecordByName("Jean", "Bon").getBirthDate());
+		assertEquals("12/31/1980", medicalRecordService.getMedicalRecordByName("Jean", "Test").getBirthDate());
 	}
 
 	@Test
@@ -57,6 +57,6 @@ public class MedicalRecordServiceTest
 	{
 		medicalRecordService.deleteMedicalRecord(medicalRecord);
 
-		assertNull(medicalRecordService.getMedicalRecordByName("Jean", "Bon"));
+		assertNull(medicalRecordService.getMedicalRecordByName("Jean", "Test"));
 	}
 }

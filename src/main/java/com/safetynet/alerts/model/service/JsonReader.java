@@ -218,18 +218,6 @@ public class JsonReader
 		}
 	}
 
-	protected void deleteMedicalRecords(MedicalRecord medicalRecord)
-	{
-		if (medicalRecord == null)
-		{
-			Logger.info("No medical record provided");
-			return;
-		}
-		ArrayList<MedicalRecord> medicalRecords = data.getMedicalRecords();
-		medicalRecords.remove(medicalRecord);
-		data.setMedicalRecords(medicalRecords);
-		writeData();
-	}
 
 	/**
 	 * Transform a date from the format MM/dd/yyyy to a Java Date Object
@@ -249,7 +237,25 @@ public class JsonReader
 
 	public String javaDateToJsonDate(LocalDate date)
 	{
-		return date.getMonth() + "/" + date.getDayOfMonth() + "/" + date.getYear();
+		String day, month;
+		if (date.getDayOfMonth() < 10)
+		{
+			day = "0" + date.getDayOfMonth();
+		}
+		else
+		{
+			day = "" + date.getDayOfMonth();
+		}
+		if (date.getMonthValue() < 10)
+		{
+			month = "0" + date.getMonthValue();
+		}
+		else
+		{
+			month = "" + date.getMonthValue();
+		}
+
+		return month + "/" + day + "/" + date.getYear();
 	}
 
 	public JsonData getData()

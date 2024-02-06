@@ -17,7 +17,7 @@ public class FirestationService implements IFirestationService
 	@Override
 	public ArrayList<Firestation> getFirestations()
 	{
-		return JsonReader.getInstance().getData().getFirestations();
+		return JsonReader.getInstance().readData().getFirestations();
 	}
 
 	/**

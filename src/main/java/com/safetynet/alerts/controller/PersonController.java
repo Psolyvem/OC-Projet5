@@ -1,7 +1,7 @@
 package com.safetynet.alerts.controller;
 
 import com.safetynet.alerts.model.bean.Person;
-import com.safetynet.alerts.model.service.PersonService;
+import com.safetynet.alerts.model.service.IPersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class PersonController
 {
 	@Autowired
-	PersonService personService;
+	IPersonService personService;
 	@GetMapping("/person")
 	public ArrayList<Person> getPersons()
 	{
