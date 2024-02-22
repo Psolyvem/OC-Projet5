@@ -20,30 +20,30 @@ public class FirestationServiceTest
 		firestationService = new FirestationService();
 
 		firestation = new Firestation();
-		firestation.setAddress("35 rue Gudu");
-		firestation.setStation("3");
+		firestation.setAddress("35 rue test");
+		firestation.setStation("9999");
 		firestationService.createFirestation(firestation);
 	}
 
 	@AfterEach
 	public void breakDown()
 	{
-		firestationService.deleteFirestation(firestationService.getFirestationByAddress("35 rue Gudu"));
+		firestationService.deleteFirestation(firestationService.getFirestationByAddress("35 rue test"));
 	}
 
 	@Test
 	public void getFirestationByAddressTest()
 	{
-		assertEquals(firestation, firestationService.getFirestationByAddress("35 rue Gudu"));
+		assertEquals(firestation, firestationService.getFirestationByAddress("35 rue test"));
 	}
 
 	@Test
 	public void modifyFirestationTest()
 	{
-		firestation.setStation("4");
+		firestation.setStation("9998");
 		firestationService.modifyFirestation(firestation);
 
-		assertEquals("4", firestationService.getFirestationByAddress("35 rue Gudu").getStation());
+		assertEquals("9998", firestationService.getFirestationByAddress("35 rue test").getStation());
 	}
 
 	@Test
@@ -51,6 +51,6 @@ public class FirestationServiceTest
 	{
 		firestationService.deleteFirestation(firestation);
 
-		assertEquals(null, firestationService.getFirestationByAddress("35 rue Gudu"));
+		assertEquals(null, firestationService.getFirestationByAddress("35 rue test"));
 	}
 }

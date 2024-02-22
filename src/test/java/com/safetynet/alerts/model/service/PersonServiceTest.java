@@ -4,6 +4,7 @@ import com.safetynet.alerts.model.bean.Person;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -12,21 +13,20 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 @SpringBootTest
 public class PersonServiceTest
 {
-	PersonService personService;
+	@Autowired
+	IPersonService personService;
+	@Autowired
 	Person person;
 
 	@BeforeEach
-	public void setUp()
+	public void setUpEach()
 	{
-		personService = new PersonService();
-
-		person = new Person();
 		person.setFirstName("Jean");
-		person.setLastName("Bon");
-		person.setAddress("35 rue gudu");
+		person.setLastName("Test");
+		person.setAddress("35 rue test");
 		person.setCity("Ecouflant");
 		person.setZip("49000");
-		person.setEmail("jean.bon@gudu.freu");
+		person.setEmail("jean.test@test.freu");
 		person.setPhone("0123456789");
 		personService.createPerson(person);
 	}
@@ -34,27 +34,27 @@ public class PersonServiceTest
 	@AfterEach
 	public void breakDown()
 	{
-		personService.deletePerson(personService.getPersonByName("Jean", "Bon"));
+		personService.deletePerson(personService.getPersonByName("Jean", "Test"));
 	}
 
 	@Test
 	public void getPersonByNameTest()
 	{
 		Person person = new Person();
-		person.setFirstName("John");
-		person.setLastName("Boyd");
-		person.setAddress("1509 Culver St");
-		person.setCity("Culver");
-		person.setZip("97451");
-		person.setEmail("jaboyd@email.com");
-		person.setPhone("841-874-6512");
+		person.setFirstName("Jean");
+		person.setLastName("Test");
+		person.setAddress("35 rue test");
+		person.setCity("Ecouflant");
+		person.setZip("49000");
+		person.setEmail("jean.test@test.freu");
+		person.setPhone("0123456789");
 
-		assertEquals(person, personService.getPersonByName("John", "Boyd"));
+		assertEquals(person, personService.getPersonByName("Jean", "Test"));
 	}
 	@Test
 	public void createPersonTest()
 	{
-		assertEquals(person, personService.getPersonByName("Jean", "Bon"));
+		assertEquals(person, personService.getPersonByName("Jean", "Test"));
 	}
 
 	@Test
@@ -63,13 +63,13 @@ public class PersonServiceTest
 		person.setCity("Flers-en-Escrebieux");
 		personService.modifyPerson(person);
 
-		assertEquals("Flers-en-Escrebieux", personService.getPersonByName("Jean", "Bon").getCity());
+		assertEquals("Flers-en-Escrebieux", personService.getPersonByName("Jean", "Test").getCity());
 	}
 	@Test
 	public void deletePersonTest()
 	{
 		personService.deletePerson(person);
 
-		assertNull(personService.getPersonByName("Jean", "Bon"));
+		assertNull(personService.getPersonByName("Jean", "Test"));
 	}
 }

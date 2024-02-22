@@ -6,9 +6,9 @@ import java.util.ArrayList;
 
 public interface IFirestationService
 {
-	ArrayList<Firestation> getFirestations();
-	Firestation getFirestationByAddress(String address);
-	void createFirestation(Firestation firestation);
-	void modifyFirestation(Firestation firestation);
-	void deleteFirestation(Firestation firestation);
+	public ArrayList<Firestation> getFirestations();
+	public Firestation getFirestationByAddress(String address);
+	public void createFirestation(Firestation firestation);
+	public void modifyFirestation(Firestation firestation);
+	public void deleteFirestation(Firestation firestation);
 }

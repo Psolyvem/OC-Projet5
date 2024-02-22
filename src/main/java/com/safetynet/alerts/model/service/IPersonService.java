@@ -6,9 +6,9 @@ import java.util.ArrayList;
 
 public interface IPersonService
 {
-	ArrayList<Person> getPersons();
-	Person getPersonByName(String firstName, String lastName);
-	void createPerson(Person person);
-	void modifyPerson(Person person);
-	void deletePerson(Person person);
+	public ArrayList<Person> getPersons();
+	public Person getPersonByName(String firstName, String lastName);
+	public void createPerson(Person person);
+	public void modifyPerson(Person person);
+	public void deletePerson(Person person);
 }

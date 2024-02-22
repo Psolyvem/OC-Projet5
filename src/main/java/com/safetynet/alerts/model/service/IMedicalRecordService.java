@@ -6,9 +6,9 @@ import java.util.ArrayList;
 
 public interface IMedicalRecordService
 {
-	ArrayList<MedicalRecord> getMedicalRecords();
-	MedicalRecord getMedicalRecordByName(String firstName, String lastName);
-	void createMedicalRecord(MedicalRecord medicalRecord);
-	void modifyMedicalRecord(MedicalRecord medicalRecord);
-	void deleteMedicalRecord(MedicalRecord medicalRecord);
+	public ArrayList<MedicalRecord> getMedicalRecords();
+	public MedicalRecord getMedicalRecordByName(String firstName, String lastName);
+	public void createMedicalRecord(MedicalRecord medicalRecord);
+	public void modifyMedicalRecord(MedicalRecord medicalRecord);
+	public void deleteMedicalRecord(MedicalRecord medicalRecord);
 }

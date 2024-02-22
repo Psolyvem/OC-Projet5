@@ -1,13 +1,12 @@
 package com.safetynet.alerts.model.service;
 
 import com.safetynet.alerts.model.bean.*;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+import org.tinylog.Logger;
 
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -16,14 +15,16 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 /**
- * Singleton that read and write Json Data
+ * Singleton that read and write Json Data<br>
+ * Contains a JsonData object with the last readings of the data<br>
+ * Pending changes must be added by setting the JsonData with setData(), then written in the json file with write()
  */
-@Component
+@Service
 @SuppressWarnings("unchecked")
 public class JsonReader
 {
-	private static final Logger logger = LogManager.getLogger();
 	private static JsonReader instance;
+
 	private JsonData data;
 
 	private JsonReader()
@@ -44,9 +45,9 @@ public class JsonReader
 	/**
 	 * @return The data in the data.json file as a JsonData object
 	 */
-	protected JsonData readData()
+	public JsonData readData()
 	{
-		logger.info("Reading data from data.json");
+		Logger.info("Reading data from data.json");
 
 		try
 		{
@@ -58,7 +59,7 @@ public class JsonReader
 			ArrayList<Person> persons = new ArrayList<>();
 			if (jsonPersons == null)
 			{
-				logger.info("No data found for : persons");
+				Logger.info("No data found for : persons");
 			}
 			else
 			{
@@ -83,7 +84,7 @@ public class JsonReader
 			ArrayList<Firestation> firestations = new ArrayList<>();
 			if (jsonFirestations == null)
 			{
-				logger.info("No data found for : firestations");
+				Logger.info("No data found for : firestations");
 			}
 			else
 			{
@@ -102,7 +103,7 @@ public class JsonReader
 			ArrayList<MedicalRecord> medicalRecords = new ArrayList<>();
 			if (jsonMedicalRecords == null)
 			{
-				logger.info("No data found for : medical records");
+				Logger.info("No data found for : medical records");
 			}
 			else
 			{
@@ -141,18 +142,18 @@ public class JsonReader
 
 		} catch (IOException e)
 		{
-			logger.error("Unable to open json file");
+			Logger.error("Unable to open json file");
 		} catch (ParseException e)
 		{
-			logger.error("Error parsing json file");
+			Logger.error("Error parsing json file");
 		}
 
 		return data;
 	}
 
-	private void writeData()
+	public void writeData()
 	{
-		logger.info("Writing data to data.json");
+		Logger.info("Writing data to data.json");
 		JSONObject jsonFile = new JSONObject();
 
 		// Mapping Java objects to Json data
@@ -213,111 +214,10 @@ public class JsonReader
 			writer.close();
 		} catch (IOException e)
 		{
-			logger.error("Unable to write in json file");
+			Logger.error("Unable to write in json file");
 		}
 	}
 
-	protected ArrayList<Person> getPersons()
-	{
-		readData();
-		return data.getPersons();
-	}
-
-	/**
-	 * Add a person to the list and writes it
-	 * Does not check if the person already exist, but check if null;
-	 *
-	 * @param person the person to add
-	 */
-	protected void addPerson(Person person)
-	{
-		if (person == null)
-		{
-			logger.info("No person provided");
-			return;
-		}
-		ArrayList<Person> persons = data.getPersons();
-		persons.add(person);
-		data.setPersons(persons);
-		writeData();
-	}
-
-	protected void deletePerson(Person person)
-	{
-		if (person == null)
-		{
-			logger.info("No person provided");
-			return;
-		}
-		ArrayList<Person> persons = data.getPersons();
-		persons.remove(person);
-		data.setPersons(persons);
-		writeData();
-	}
-
-	public ArrayList<Firestation> getFirestations()
-	{
-		readData();
-		return data.getFirestations();
-	}
-
-	protected void addFirestation(Firestation firestation)
-	{
-		if (firestation == null)
-		{
-			logger.info("No firestation provided");
-			return;
-		}
-		ArrayList<Firestation> firestations = data.getFirestations();
-		firestations.add(firestation);
-		data.setFirestations(firestations);
-		writeData();
-	}
-
-	protected void deleteFirestation(Firestation firestation)
-	{
-		if (firestation == null)
-		{
-			logger.info("No firestation provided");
-			return;
-		}
-		ArrayList<Firestation> firestations = data.getFirestations();
-		firestations.remove(firestation);
-		data.setFirestations(firestations);
-		writeData();
-	}
-
-	public ArrayList<MedicalRecord> getMedicalRecords()
-	{
-		readData();
-		return data.getMedicalRecords();
-	}
-
-	protected void addMedicalRecords(MedicalRecord medicalRecord)
-	{
-		if (medicalRecord == null)
-		{
-			logger.info("No medical record provided");
-			return;
-		}
-		ArrayList<MedicalRecord> medicalRecords = data.getMedicalRecords();
-		medicalRecords.add(medicalRecord);
-		data.setMedicalRecords(medicalRecords);
-		writeData();
-	}
-
-	protected void deleteMedicalRecords(MedicalRecord medicalRecord)
-	{
-		if (medicalRecord == null)
-		{
-			logger.info("No medical record provided");
-			return;
-		}
-		ArrayList<MedicalRecord> medicalRecords = data.getMedicalRecords();
-		medicalRecords.remove(medicalRecord);
-		data.setMedicalRecords(medicalRecords);
-		writeData();
-	}
 
 	/**
 	 * Transform a date from the format MM/dd/yyyy to a Java Date Object
@@ -337,6 +237,34 @@ public class JsonReader
 
 	public String javaDateToJsonDate(LocalDate date)
 	{
-		return date.getMonth() + "/" + date.getDayOfMonth() + "/" + date.getYear();
+		String day, month;
+		if (date.getDayOfMonth() < 10)
+		{
+			day = "0" + date.getDayOfMonth();
+		}
+		else
+		{
+			day = "" + date.getDayOfMonth();
+		}
+		if (date.getMonthValue() < 10)
+		{
+			month = "0" + date.getMonthValue();
+		}
+		else
+		{
+			month = "" + date.getMonthValue();
+		}
+
+		return month + "/" + day + "/" + date.getYear();
+	}
+
+	public JsonData getData()
+	{
+		return data;
+	}
+
+	public void setData(JsonData data)
+	{
+		this.data = data;
 	}
 }

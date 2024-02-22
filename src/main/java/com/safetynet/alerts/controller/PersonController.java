@@ -1,32 +1,33 @@
 package com.safetynet.alerts.controller;
 
 import com.safetynet.alerts.model.bean.Person;
-import com.safetynet.alerts.model.service.PersonService;
+import com.safetynet.alerts.model.service.IPersonService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 
 @RestController
-@RequestMapping("/person")
 public class PersonController
 {
-	PersonService personService = new PersonService();
-	@RequestMapping(method = RequestMethod.GET)
+	@Autowired
+	IPersonService personService;
+	@GetMapping("/person")
 	public ArrayList<Person> getPersons()
 	{
 		return personService.getPersons();
 	}
-	@RequestMapping(method = RequestMethod.POST)
+	@PostMapping("/person")
 	public void postPerson(@RequestBody Person person)
 	{
 		personService.createPerson(person);
 	}
-	@RequestMapping(method = RequestMethod.PUT)
+	@PutMapping("/person")
 	public void putPerson(@RequestBody Person person)
 	{
 		personService.modifyPerson(person);
 	}
-	@RequestMapping(method = RequestMethod.DELETE)
+	@DeleteMapping("/person")
 	public void deletePerson(@RequestBody Person person)
 	{
 		personService.deletePerson(person);
