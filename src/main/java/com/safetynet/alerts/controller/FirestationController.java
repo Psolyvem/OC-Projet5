@@ -7,6 +7,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.tinylog.Logger;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -27,7 +28,7 @@ public class FirestationController
 	@GetMapping(path = "/firestation", params = "address")
 	public Firestation getFirestationByAddress(@RequestParam(name = "address") String address)
 	{
-			return firestationService.getFirestationByAddress(address);
+		return firestationService.getFirestationByAddress(address);
 	}
 
 
